@@ -39,7 +39,7 @@ public class UploadController implements ServletContextAware {
 
     @RequestMapping("view")///{path}/{name}
     @ResponseBody
-    public String viewImage(@PathVariable("path") String path,/*@PathVariable("name")String filename,*/ HttpServletResponse response){
+    public String viewImage(/*@PathVariable("path")*/ String path,/*@PathVariable("name")String filename,*/ HttpServletResponse response){
         ImageUtils.outputImg(path,response);
         return "";
     }
@@ -74,10 +74,10 @@ public class UploadController implements ServletContextAware {
                     } else {
                         map.put("compressSize", "null");
                     }
-                    map.put("url", "/view?path="+filePath);
+                    map.put("url", filePath);
                     map.put("deleteUrl", "delete?path=" + filePath);
                     map.put("deleteType", "a");
-                    map.put("thumbnailUrl", filePath);
+                    map.put("thumbnailUrl", "view?path="+filePath);
                     List<Map<String, Object>> files = new ArrayList<Map<String, Object>>();
                     files.add(map);
                     dto.setFiles(files);
