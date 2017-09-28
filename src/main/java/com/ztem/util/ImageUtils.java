@@ -97,17 +97,13 @@ public class ImageUtils {
         String[] names = FileUtil.getFileNameAndExtName(filePath);
         //根据文件不同格式设置ContentType
         if (names != null && names.length > 0) {
-         /*   switch (names[1]) {
-                case ".jpg":*/
-                    response.setContentType("image/jpeg ");
-            /*        break;
-                case ".png":
-                    response.setContentType("image/png");
-                    break;
-                default:
-                    response.setContentType("image/jpeg");
-                    break;*/
-           // }
+            if (".jpg".equals(names[1])) {
+                response.setContentType("image/jpeg ");
+            } else if (".png".equals(names[1])){
+                response.setContentType("image/png");
+            } else {
+                response.setContentType("image/jpeg");
+            }
         }
         File file = new File(filePath);
         if (!file.exists()) {
@@ -222,16 +218,27 @@ public class ImageUtils {
      *
      * @param srcURL 图片路径
      */
-    public static void imageYS(String srcURL) {
+    public static void imageYS(String srcURL, String fileType) {
         try {
+            if (fileType == null) {
+                fileType = "jpg";
+            }
             File srcFile = new File(srcURL);
-            Image src = ImageIO.read(srcFile);
+            BufferedImage src = ImageIO.read(srcFile);
             int srcHeight = src.getHeight(null);
             int srcWidth = src.getWidth(null);
-            BufferedImage tag = new BufferedImage(srcWidth, srcHeight, BufferedImage.TYPE_3BYTE_BGR);
+            // BufferedImage tag = new BufferedImage(srcWidth, srcHeight, BufferedImage.TYPE_4BYTE_ABGR);
+            BufferedImage tag;
+            //BufferedImage img = ImageIO.read(/* from somewhere */);
+            if (src.getColorModel().hasAlpha()) {
+                tag = new BufferedImage(srcWidth, srcHeight, BufferedImage.TYPE_4BYTE_ABGR);
+                // img has alpha channel
+            } else {
+                tag = new BufferedImage(srcWidth, srcHeight, BufferedImage.TYPE_3BYTE_BGR);
+                // no alpha channel
+            }
             tag.getGraphics().drawImage(src, 0, 0, srcWidth, srcHeight, null); //绘制缩小后的图
-            ImageIO.write(tag, "jpg", srcFile);
-
+            ImageIO.write(tag, fileType, srcFile);
         } catch (Exception e) {
             e.printStackTrace();
         }

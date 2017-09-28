@@ -79,7 +79,12 @@
       <version>2.5</version>
       <scope>provided</scope>
     </dependency>
-
+    <!--*******************************图片压缩网站*************************************-->
+    <dependency>
+      <groupId>com.tinify</groupId>
+      <artifactId>tinify</artifactId>
+      <version>RELEASE</version>
+    </dependency>
 
     <!-- junit -->
     <dependency>
